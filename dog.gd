@@ -24,9 +24,6 @@ var left_vec = Vector2.ZERO
 var right_last = Vector2.ZERO
 var stick_radius = 100.0
 
-var push_radius := 1.5
-var push_strength := 10.0
-
 func _ready():
 	if cam != null:
 		var to_cam = cam.global_transform.origin - (global_transform.origin + Vector3(0, cam_target_height, 0))
@@ -86,32 +83,8 @@ func _physics_process(delta):
 	else:
 		velocity = velocity.lerp(Vector3.ZERO, decel * delta)
 	move_and_slide()
-	_apply_nearby_impulses()
 	_update_camera(delta)
 	_update_anim()
-
-func _apply_nearby_impulses():
-	if velocity.length() < 0.01:
-		return
-	var space = get_world_3d().direct_space_state
-	var sphere := SphereShape3D.new()
-	sphere.radius = push_radius
-	var params := PhysicsShapeQueryParameters3D.new()
-	params.shape = sphere
-	params.transform = Transform3D(Basis(), global_transform.origin)
-	params.exclude = [self]
-	params.collide_with_areas = false
-	var results = space.intersect_shape(params, 16)
-	for r in results:
-		var rb = r.get("collider")
-		if rb is RigidBody3D:
-			var rel = velocity - rb.linear_velocity
-			if rel.length() <= 0.0:
-				continue
-			var d = global_transform.origin.distance_to(rb.global_transform.origin)
-			var falloff = clamp(1.0 - (d / push_radius), 0.0, 1.0)
-			var impulse = rel.normalized() * rel.length() * push_strength * falloff
-			rb.apply_central_impulse(impulse)
 
 func _update_camera(_delta):
 	if cam == null:

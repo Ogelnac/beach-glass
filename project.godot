@@ -17,6 +17,8 @@ config/icon="uid://tgieoepw8bql"
 
 [display]
 
+window/size/viewport_width=2304
+window/size/viewport_height=1296
 window/size/always_on_top=true
 
 [input_devices]
