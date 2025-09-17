@@ -11,13 +11,16 @@ config_version=5
 [application]
 
 config/name="Beach Glass"
-run/main_scene="uid://cj2rcic6dxcwt"
+run/main_scene="uid://b2vdddkn473kt"
 config/features=PackedStringArray("4.4", "Mobile")
-config/icon="res://icon.svg"
 
 [display]
 
 window/size/always_on_top=true
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [rendering]
 

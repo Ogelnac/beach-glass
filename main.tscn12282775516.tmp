@@ -1,23 +1,45 @@
-[gd_scene load_steps=20 format=4 uid="uid://cj2rcic6dxcwt"]
+[gd_scene load_steps=22 format=4 uid="uid://cj2rcic6dxcwt"]
 
+[ext_resource type="Script" uid="uid://bt83i1x61e338" path="res://window.gd" id="1_1bvp3"]
 [ext_resource type="ArrayMesh" uid="uid://bpi8d1u81fli3" path="res://bunny_mesh.tres" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://6boaq4rlekrr" path="res://dog.gd" id="2_h2yge"]
 [ext_resource type="Material" uid="uid://o0kvuh6ao5b0" path="res://Material.001.tres" id="3_1bvp3"]
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_h2yge"]
+viewport_path = NodePath("SubViewport")
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ig7tw"]
 
-[sub_resource type="Sky" id="Sky_h2yge"]
+[sub_resource type="Sky" id="Sky_0xm2m"]
 sky_material = SubResource("ProceduralSkyMaterial_ig7tw")
 
 [sub_resource type="Environment" id="Environment_h2yge"]
 background_mode = 2
 background_energy_multiplier = 2.0
-sky = SubResource("Sky_h2yge")
+sky = SubResource("Sky_0xm2m")
 fog_enabled = true
 fog_mode = 1
 fog_light_color = Color(0.475629, 0.559449, 0.655338, 1)
 fog_density = 1.0
 fog_sky_affect = 0.8
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lquwl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
+albedo_color = Color(1, 0.824636, 0.55477, 1)
+metallic = 0.19
+roughness = 0.74
+normal_texture = SubResource("NoiseTexture2D_lquwl")
+heightmap_deep_parallax = true
+heightmap_min_layers = 8
+heightmap_max_layers = 32
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
+material = SubResource("StandardMaterial3D_h2yge")
+size = Vector3(1000, 1, 1000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1bvp3"]
+size = Vector3(1000, 1, 1000)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ig7tw"]
 radius = 1.24212
@@ -1101,48 +1123,46 @@ _data = {
 radius = 0.490548
 height = 3.08565
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lquwl"]
+[node name="Main" type="Node3D"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
-albedo_color = Color(1, 0.824636, 0.55477, 1)
-metallic = 0.19
-roughness = 0.74
-normal_texture = SubResource("NoiseTexture2D_lquwl")
-heightmap_deep_parallax = true
-heightmap_min_layers = 8
-heightmap_max_layers = 32
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
-material = SubResource("StandardMaterial3D_h2yge")
-size = Vector3(1000, 1, 1000)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_1bvp3"]
-size = Vector3(1000, 1, 1000)
-
-[node name="main" type="SubViewportContainer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 116.0
+offset_top = 81.0
+offset_right = 116.0
+offset_bottom = 81.0
 grow_horizontal = 2
 grow_vertical = 2
-stretch = true
-stretch_shrink = 2
+mouse_filter = 2
+texture = SubResource("ViewportTexture_h2yge")
 
 [node name="SubViewport" type="SubViewport" parent="."]
-handle_input_locally = false
-size = Vector2i(576, 324)
-render_target_update_mode = 4
+script = ExtResource("1_1bvp3")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewport"]
 environment = SubResource("Environment_h2yge")
 
+[node name="Floor" type="MeshInstance3D" parent="SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("BoxMesh_0xm2m")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="SubViewport/Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/Floor/StaticBody3D"]
+shape = SubResource("BoxShape3D_1bvp3")
+
 [node name="RigidBody3D" type="RigidBody3D" parent="SubViewport"]
-transform = Transform3D(0.954084, 0.29954, 0, -0.29954, 0.954084, 0, 0, 0, 1, 0, 2.12013, 9.31374)
+transform = Transform3D(0.954084, 0.29954, 0, -0.29954, 0.954084, 0, 0, 0, 1, 0, 2.12013, 0)
 
 [node name="Bunny" type="MeshInstance3D" parent="SubViewport/RigidBody3D"]
-transform = Transform3D(1, -2.98023e-08, 0, 2.98023e-08, 1, 0, 0, 0, 1, 0, 0, 0)
+transform = Transform3D(1, -2.98023e-08, 0, 2.98023e-08, 1, 0, 0, 0, 1, 0, 0, 9.83917)
 mesh = ExtResource("1_ig7tw")
-skeleton = NodePath("../../../../..")
+skeleton = NodePath("../../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0984302, 0)
@@ -1398,8 +1418,6 @@ bones/32/scale = Vector3(1, 1, 1)
 [node name="Chibi_base_002" type="MeshInstance3D" parent="SubViewport/dog/Armature/Skeleton3D"]
 mesh = SubResource("ArrayMesh_6ldgb")
 skin = SubResource("Skin_c74ol")
-blend_shapes/HeadLeft = 0.0
-blend_shapes/HeadRight = 0.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="SubViewport/dog"]
 libraries = {
@@ -1412,13 +1430,3 @@ transform = Transform3D(-1, 9.13817e-09, -8.69439e-08, 0, 0.994522, 0.104528, 8.
 [node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/dog"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.562, 0)
 shape = SubResource("CapsuleShape3D_lquwl")
-
-[node name="Floor" type="MeshInstance3D" parent="SubViewport"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-mesh = SubResource("BoxMesh_0xm2m")
-skeleton = NodePath("../../../..")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="SubViewport/Floor"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SubViewport/Floor/StaticBody3D"]
-shape = SubResource("BoxShape3D_1bvp3")
