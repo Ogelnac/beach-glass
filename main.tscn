@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=3 uid="uid://cj2rcic6dxcwt"]
+
+[ext_resource type="ArrayMesh" uid="uid://bpi8d1u81fli3" path="res://bunny_mesh.tres" id="1_ig7tw"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ig7tw"]
+
+[sub_resource type="Sky" id="Sky_0xm2m"]
+sky_material = SubResource("ProceduralSkyMaterial_ig7tw")
+
+[sub_resource type="Environment" id="Environment_h2yge"]
+background_mode = 2
+background_energy_multiplier = 2.0
+sky = SubResource("Sky_0xm2m")
+fog_enabled = true
+fog_mode = 1
+fog_light_color = Color(0.475629, 0.559449, 0.655338, 1)
+fog_density = 1.0
+fog_sky_affect = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
+albedo_color = Color(1, 0.783046, 0.435605, 1)
+metallic = 0.19
+roughness = 0.74
+
+[sub_resource type="BoxMesh" id="BoxMesh_0xm2m"]
+material = SubResource("StandardMaterial3D_h2yge")
+size = Vector3(1000, 1, 1000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1bvp3"]
+size = Vector3(1000, 1, 1000)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ig7tw"]
+radius = 1.24212
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0xm2m"]
+radius = 0.418779
+height = 1.57511
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_h2yge")
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("BoxMesh_0xm2m")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource("BoxShape3D_1bvp3")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.994524, 0.104511, 0, -0.104511, 0.994524, 0, 3.22849, 9.52736)
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(0.954084, 0.29954, 0, -0.29954, 0.954084, 0, 0, 0, 1, 0, 2.12013, 0)
+
+[node name="Bunny" type="MeshInstance3D" parent="RigidBody3D"]
+mesh = ExtResource("1_ig7tw")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0984302, 0)
+shape = SubResource("SphereShape3D_ig7tw")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5484, 0.857042)
+shape = SubResource("CapsuleShape3D_0xm2m")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.548, -0.857)
+shape = SubResource("CapsuleShape3D_0xm2m")
