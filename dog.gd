@@ -2,7 +2,7 @@ extends RigidBody3D
 
 @onready var cam: Camera3D = $Camera3D
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var texture_button: TextureButton = $"../../UI/TextureButton"
+@onready var texture_button: TextureButton = $"../UI/TextureButton"
 
 @export var run_multiplier := 1.7
 
@@ -10,7 +10,7 @@ var move_speed = 6.0
 var accel = 12.0
 var decel = 16.0
 var turn_speed = 10.0
-var cam_sens = 0.01
+var cam_sens = 0.035
 var cam_distance = 6.0
 var cam_target_height = 1.5
 var cam_collision = true

@@ -1777,19 +1777,19 @@ libraries = {
 &"": SubResource("AnimationLibrary_n8pj8")
 }
 
-[node name="UI" type="CanvasLayer" parent="SubViewportContainer"]
+[node name="UI" type="CanvasLayer" parent="SubViewportContainer/SubViewport"]
 
-[node name="TextureButton" type="TextureButton" parent="SubViewportContainer/UI"]
+[node name="TextureButton" type="TextureButton" parent="SubViewportContainer/SubViewport/UI"]
 texture_filter = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -473.0
-offset_top = -449.0
-offset_right = -68.0
-offset_bottom = -44.0
+offset_left = -75.0
+offset_top = -75.0
+offset_right = -15.0
+offset_bottom = -15.0
 grow_horizontal = 0
 grow_vertical = 0
 texture_normal = SubResource("AtlasTexture_vvyr7")
