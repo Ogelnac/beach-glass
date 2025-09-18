@@ -1,7 +1,10 @@
-extends CharacterBody3D
+extends RigidBody3D
 
 @onready var cam: Camera3D = $Camera3D
 @onready var anim: AnimationPlayer = $AnimationPlayer
+@onready var texture_button: TextureButton = $"../../../TextureButton"
+
+@export var run_multiplier := 1.7
 
 var move_speed = 6.0
 var accel = 12.0
@@ -24,12 +27,28 @@ var left_vec = Vector2.ZERO
 var right_last = Vector2.ZERO
 var stick_radius = 100.0
 
+var run_held := false
+
 func _ready():
+	gravity_scale = 0.0
+	axis_lock_linear_y = true
+	axis_lock_angular_x = true
+	axis_lock_angular_z = true
+	angular_damp = 8.0
+	if texture_button:
+		texture_button.button_down.connect(_on_run_down)
+		texture_button.button_up.connect(_on_run_up)
 	if cam != null:
 		var to_cam = cam.global_transform.origin - (global_transform.origin + Vector3(0, cam_target_height, 0))
 		if to_cam.length() > 0.01:
 			yaw = atan2(to_cam.x, -to_cam.z)
 	_update_camera(0.0)
+
+func _on_run_down():
+	run_held = true
+
+func _on_run_up():
+	run_held = false
 
 func _unhandled_input(event):
 	var half = get_viewport().get_visible_rect().size.x * 0.5
@@ -74,15 +93,19 @@ func _physics_process(delta):
 		r = r.normalized()
 		var stick = Vector2(left_vec.x, -left_vec.y)
 		world_dir = (r * stick.x + f * stick.y).normalized()
-	var target_vel = world_dir * move_speed
+	var speed = move_speed * (run_multiplier if run_held else 1.0)
+	var target_vel = world_dir * speed
+	var horiz = Vector3(linear_velocity.x, 0.0, linear_velocity.z)
 	if world_dir != Vector3.ZERO:
-		velocity = velocity.lerp(target_vel, accel * delta)
+		horiz = horiz.lerp(target_vel, accel * delta)
 		var desired = atan2(world_dir.x, world_dir.z)
 		var ang = lerp_angle(rotation.y, desired, clamp(turn_speed * delta, 0.0, 1.0))
 		rotation.y = ang
+		angular_velocity.y = 0.0
 	else:
-		velocity = velocity.lerp(Vector3.ZERO, decel * delta)
-	move_and_slide()
+		horiz = horiz.lerp(Vector3.ZERO, decel * delta)
+		angular_velocity.y = 0.0
+	linear_velocity = Vector3(horiz.x, 0.0, horiz.z)
 	_update_camera(delta)
 	_update_anim()
 
@@ -107,9 +130,14 @@ func _update_camera(_delta):
 func _update_anim():
 	if anim == null:
 		return
-	if velocity.length() > 0.1:
-		if anim.current_animation != "Walk":
-			anim.play("Walk")
+	var spd = Vector3(linear_velocity.x, 0.0, linear_velocity.z).length()
+	if spd > 0.1:
+		if run_held:
+			if anim.current_animation != "Run":
+				anim.play("Run")
+		else:
+			if anim.current_animation != "Walk":
+				anim.play("Walk")
 	else:
 		if anim.current_animation != "Idle":
 			anim.play("Idle")

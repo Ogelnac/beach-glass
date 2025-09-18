@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://i7bfdx4uotdf"
-path="res://.godot/imported/dog.glb-ba4854a9b4775e0a76cabaf1a8c5ec25.scn"
+uid="uid://cv8a4ej46sbb5"
+path="res://.godot/imported/hole.glb-f15d89d8a601c32344ff0c7aa9252b3a.scn"
 
 [deps]
 
-source_file="res://dog.glb"
-dest_files=["res://.godot/imported/dog.glb-ba4854a9b4775e0a76cabaf1a8c5ec25.scn"]
+source_file="res://hole.glb"
+dest_files=["res://.godot/imported/hole.glb-f15d89d8a601c32344ff0c7aa9252b3a.scn"]
 
 [params]
 
@@ -32,13 +32,6 @@ animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
-_subresources={
-"materials": {
-"Material.001": {
-"use_external/enabled": false,
-"use_external/path": "res://Material.001.tres"
-}
-}
-}
+_subresources={}
 gltf/naming_version=1
 gltf/embedded_image_handling=1

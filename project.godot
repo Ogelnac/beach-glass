@@ -13,6 +13,8 @@ config_version=5
 config/name="Beach Glass"
 run/main_scene="uid://b2vdddkn473kt"
 config/features=PackedStringArray("4.4", "Mobile")
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/show_image=false
 config/icon="uid://tgieoepw8bql"
 
 [display]

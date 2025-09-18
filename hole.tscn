@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=4 uid="uid://cq8gw4xuy3keh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ymmax"]
+albedo_color = Color(0.270527, 0.167516, 0.0539035, 1)
+metallic_specular = 0.0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_r0eli"]
+_surfaces = [{
+"aabb": AABB(-1.27803, 0, -1.27803, 2.55605, 0.345035, 2.55605),
+"format": 34896613377,
+"index_count": 96,
+"index_data": PackedByteArray("EAABAAIAEAADAAEAEQAQAAIAEQACAAgAEgADABAAEgAEAAMAEwAQABEAEwASABAAFAARAAgAFAAIAAcACQAUAAcACQAHAAoACwAUAAkAFQARABQACwAVABQAFQATABEADAAVAAsADAAWABUAFgATABUADQAWAAwADQAOABYAFgAXABMADgAXABYAFwASABMADgAPABcAFwAYABIADwAYABcAGAAEABIADwAAABgAGAAFAAQAAAAFABgAAAAGAAUA"),
+"lods": [0.442408, PackedByteArray("AAABAAIAAAADAAEAAAAEAAMAAAAFAAQAAAAGAAUABwACAAgABwAAAAIACQAHAAoACwAHAAkACwAAAAcADAAAAAsADQAAAAwADQAOAAAADgAPAAAA")],
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 25,
+"vertex_data": PackedByteArray("7A0AAOtNAAAm5AAA2BsAABLyAADrTQAAE7IAAOwNAAD/fwAAAAAAAOtNAADsDQAA2BsAANgbAAAS8gAAE7IAAP//AAD/fwAAE7IAABLyAAAm5AAAJuQAAP9/AAD//wAA600AABLyAADYGwAAJuQAAOwNAAATsgAAAAAAAP9/AAA/q///v1QAAIew////fwAA/3///3dPAAD/f26N/38AAD+r//8/qwAA/3///4ewAAC/VP//P6sAAHdP////fwAAv1T//79UAAA=")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_27pby"]
+resource_name = "hole_Plane"
+_surfaces = [{
+"aabb": AABB(-1.27803, 0, -1.27803, 2.55605, 0.345035, 2.55605),
+"attribute_data": PackedByteArray("AAD/P///AAD///8//78AAP9/AAD/PwAAAAAAAP///7////9//7//////////f////z///wAA//8AAP+/AAD/f/+//z//v/9//3//P/9//3//v/+//3//v/8//7//P/9//z//Pw=="),
+"format": 34896613399,
+"index_count": 96,
+"index_data": PackedByteArray("EAABAAIAEAADAAEAEQAQAAIAEQACAAgAEgADABAAEgAEAAMAEwAQABEAEwASABAAFAARAAgAFAAIAAcACQAUAAcACQAHAAoACwAUAAkAFQARABQACwAVABQAFQATABEADAAVAAsADAAWABUAFgATABUADQAWAAwADQAOABYAFgAXABMADgAXABYAFwASABMADgAPABcAFwAYABIADwAYABcAGAAEABIADwAAABgAGAAFAAQAAAAFABgAAAAGAAUA"),
+"lods": [0.442408, PackedByteArray("AAABAAIAAAADAAEAAAAEAAMAAAAFAAQAAAAGAAUABwACAAgABwAAAAIACQAHAAoACwAHAAkACwAAAAcADAAAAAsADQAAAAwADQAOAAAADgAPAAAA")],
+"material": SubResource("StandardMaterial3D_ymmax"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 25,
+"vertex_data": PackedByteArray("7A0AAOtNDsgm5AAA2BvCzBLyAADrTeTHE7IAAOwNbND/fwAAAABr0etNAADsDbDP2BsAANgbnc4S8gAAE7LUuv//AAD/fxTCE7IAABLyNLEm5AAAJuSEtP9/AAD//5au600AABLyYrHYGwAAJuTvtOwNAAATsh+7AAAAAP9/mME/q///v1TrxYew////fyXA/3///3dPGcb/f26N/38BwD+r//8/q3y6/3///4ew57m/VP//P6t6undP////f1HAv1T//79U6MWW7Pqg4OZ6dsfeJ2vK6NSFm/1zgSn/w45C/Tdlt9qocFXZ8m1e64hs4OBWXVL8b4E54MiXPuzMnxHyY6VL69Smj/HKekrvEXY8/XuBOvzhgZ/vv3XM/HmBi/VZkDv5rJCW+nWO")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_r0eli")
+
+[node name="Hole" type="MeshInstance3D"]
+mesh = SubResource("ArrayMesh_27pby")
+skeleton = NodePath("")
