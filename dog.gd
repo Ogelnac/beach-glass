@@ -2,7 +2,7 @@ extends RigidBody3D
 
 @onready var cam: Camera3D = $Camera3D
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var texture_button: TextureButton = $"../../../TextureButton"
+@onready var texture_button: TextureButton = $"../../UI/TextureButton"
 
 @export var run_multiplier := 1.7
 
