@@ -8,6 +8,8 @@
 render_priority = 0
 shader = ExtResource("2_bmu3n")
 shader_parameter/albedo = ExtResource("3_bsnlv")
+shader_parameter/colour = Color(1, 1, 1, 1)
+shader_parameter/use_colour = true
 shader_parameter/scale_offset = 0.2
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_qwl8u"]
@@ -453,7 +455,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.651318, -0.515749)
 shape = SubResource("SphereShape3D_ellki")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-debug_enabled = true
 debug_path_custom_color = Color(1, 0, 0, 1)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

@@ -50,6 +50,8 @@ size = Vector3(100, 1, 100)
 render_priority = 0
 shader = ExtResource("7_phhon")
 shader_parameter/albedo = ExtResource("7_xyq5p")
+shader_parameter/colour = Color(1, 1, 1, 1)
+shader_parameter/use_colour = false
 shader_parameter/scale_offset = 10.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_vvyr7"]
@@ -1457,6 +1459,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1464,11 +1467,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 stretch = true
-stretch_shrink = 4
+stretch_shrink = 6
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
 handle_input_locally = false
-size = Vector2i(576, 324)
+size = Vector2i(384, 216)
 render_target_update_mode = 4
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport"]
@@ -1499,6 +1502,7 @@ transform = Transform3D(-0.860582, 0, -0.509312, 0, 1, 0, 0.509312, 0, -0.860582
 [node name="RabbitManager" type="Node" parent="SubViewportContainer/SubViewport"]
 script = ExtResource("4_hfvte")
 rabbit_scene = ExtResource("5_xyq5p")
+rabbit_colours = Array[Color]([Color(1, 1, 1, 1), Color(0.69, 0.69, 0.69, 1), Color(0.39, 0.39, 0.39, 1), Color(0.277556, 0.203017, 0.13837, 1), Color(0.631918, 0.512755, 0.430493, 1), Color(0.606792, 0.414003, 0.28149, 1), Color(0.923223, 0.858431, 0.667024, 1)])
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="SubViewportContainer/SubViewport"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)

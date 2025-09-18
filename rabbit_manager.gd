@@ -1,6 +1,7 @@
 extends Node
 
 @export var rabbit_scene: PackedScene
+@export var rabbit_colours: Array[Color]
 @onready var holes: Node = $"../Holes"
 
 var timer: Timer
@@ -36,4 +37,15 @@ func _spawn_rabbit():
 	var instance = rabbit_scene.instantiate()
 	var hole: MeshInstance3D = holes.get_child(rand_ind)
 	instance.position = hole.position
+
+	var cube: MeshInstance3D = instance.get_node("Armature/Skeleton3D/Cube")
+	var base_mat := cube.get_surface_override_material(0)
+	if base_mat == null:
+		base_mat = cube.mesh.surface_get_material(0)
+	var mat := base_mat.duplicate()
+	mat.resource_local_to_scene = true
+	var rand_colour = rabbit_colours[randi_range(0, rabbit_colours.size() - 1)]
+	mat.set_shader_parameter("colour", rand_colour)
+	cube.set_surface_override_material(0, mat)
+
 	add_child(instance)

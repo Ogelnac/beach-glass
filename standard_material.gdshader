@@ -2,6 +2,9 @@ shader_type spatial;
 render_mode unshaded, cull_disabled;
 
 uniform sampler2D albedo: source_color, filter_nearest;
+uniform vec3 colour: source_color = vec3(1.0, 1.0, 1.0);
+uniform bool use_colour = false;
+
 uniform float scale_offset = 0.2;
 
 void vertex() {
@@ -15,5 +18,9 @@ void vertex() {
 }
 
 void fragment() {
-	ALBEDO = texture(albedo, UV).rgb;
+	vec3 blend = mix(colour, texture(albedo, UV).rgb, 0.5);
+	if (use_colour)
+		ALBEDO = blend;
+	else
+		ALBEDO = texture(albedo, UV).rgb;
 }

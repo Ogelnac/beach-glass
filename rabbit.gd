@@ -8,7 +8,7 @@ extends CharacterBody3D
 
 @export var plant_manager_path: NodePath = ^"../../PlantManager"
 @export var holes_path: NodePath = ^"../../Holes"
-@export var move_speed := 4.5
+@export var move_speed := 3.0
 @export var accel := 12.0
 @export var decel := 16.0
 @export var turn_speed := 10.0
@@ -199,7 +199,7 @@ func _process_flee(delta):
 	var dlen := to_next.length()
 	if dlen > 0.02:
 		var dir := to_next / dlen
-		var desired_vel := dir * move_speed
+		var desired_vel := dir * move_speed * hop_flee_speed
 		velocity = velocity.lerp(desired_vel, accel * delta)
 		var desired_yaw := atan2(dir.x, dir.z)
 		rotation.y = lerp_angle(rotation.y, desired_yaw, clamp(turn_speed * delta, 0.0, 1.0))
@@ -406,9 +406,13 @@ func _pick_next_after_alert():
 		_set_state(State.IDLE_GRAZING)
 
 func _play_hop_oneshot():
-	if anim:
-		forcing_oneshot = true
-		anim.play("Hop")
+	if anim == null or forcing_oneshot:
+		return
+	forcing_oneshot = true
+	anim.speed_scale = 1.0
+	anim.play("Hop")
+	await anim.animation_finished
+	forcing_oneshot = false
 
 func _play_hop_oneshot_then(cb):
 	if anim:

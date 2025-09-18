@@ -10,7 +10,7 @@ var move_speed = 6.0
 var accel = 12.0
 var decel = 16.0
 var turn_speed = 10.0
-var cam_sens = 0.006
+var cam_sens = 0.01
 var cam_distance = 6.0
 var cam_target_height = 1.5
 var cam_collision = true
@@ -28,6 +28,7 @@ var right_last = Vector2.ZERO
 var stick_radius = 100.0
 
 var run_held := false
+var run_touch_id := -1
 
 func _ready():
 	gravity_scale = 0.0
@@ -49,26 +50,40 @@ func _on_run_down():
 
 func _on_run_up():
 	run_held = false
+	run_touch_id = -1
+
+func _is_on_run_button(pos: Vector2) -> bool:
+	return texture_button != null and texture_button.get_global_rect().has_point(pos)
 
 func _unhandled_input(event):
 	var half = get_viewport().get_visible_rect().size.x * 0.5
 	if event is InputEventScreenTouch:
 		if event.pressed:
-			if event.position.x < half and left_id == -1:
+			if _is_on_run_button(event.position) and run_touch_id == -1:
+				run_touch_id = event.index
+				run_held = true
+			elif event.position.x < half and left_id == -1:
 				left_id = event.index
 				left_origin = event.position
 				left_vec = Vector2.ZERO
-			elif event.position.x >= half and right_id == -1:
+			elif event.position.x >= half and right_id == -1 and not _is_on_run_button(event.position):
 				right_id = event.index
 				right_last = event.position
 		else:
+			if event.index == run_touch_id:
+				run_touch_id = -1
+				run_held = false
 			if event.index == left_id:
 				left_id = -1
 				left_vec = Vector2.ZERO
 			if event.index == right_id:
 				right_id = -1
 	if event is InputEventScreenDrag:
-		if event.index == left_id:
+		if event.index == run_touch_id:
+			if not _is_on_run_button(event.position):
+				run_touch_id = -1
+				run_held = false
+		elif event.index == left_id:
 			var v = event.position - left_origin
 			if v.length() > stick_radius:
 				v = v.normalized() * stick_radius
