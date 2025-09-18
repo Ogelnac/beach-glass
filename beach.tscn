@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=4 uid="uid://b2vdddkn473kt"]
+[gd_scene load_steps=29 format=4 uid="uid://b2vdddkn473kt"]
 
 [ext_resource type="Script" uid="uid://6boaq4rlekrr" path="res://dog.gd" id="1_u1030"]
 [ext_resource type="PackedScene" uid="uid://cq8gw4xuy3keh" path="res://hole.tscn" id="2_phhon"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b8kuukbnyu8l0" path="res://rabbit.tscn" id="5_xyq5p"]
 [ext_resource type="Shader" uid="uid://bj7tudj5sw620" path="res://standard_material.gdshader" id="7_phhon"]
 [ext_resource type="Texture2D" uid="uid://c8bslovresixv" path="res://dog.png" id="7_xyq5p"]
+[ext_resource type="Script" uid="uid://bjgkls8h8831e" path="res://run_button.gd" id="9_phhon"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hgnw7"]
 
@@ -1777,10 +1778,10 @@ libraries = {
 &"": SubResource("AnimationLibrary_n8pj8")
 }
 
-[node name="TextureButton" type="TouchScreenButton" parent="."]
-texture_filter = 1
-position = Vector2(1866, 889)
+[node name="RunButton" type="TouchScreenButton" parent="."]
+position = Vector2(2304, 1296)
 scale = Vector2(2.75, 2.75)
 texture_normal = SubResource("AtlasTexture_vvyr7")
 texture_pressed = SubResource("AtlasTexture_d38me")
 action = "player_run"
+script = ExtResource("9_phhon")
