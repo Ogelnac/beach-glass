@@ -1792,6 +1792,7 @@ offset_right = -15.0
 offset_bottom = -15.0
 grow_horizontal = 0
 grow_vertical = 0
+mouse_filter = 2
 texture_normal = SubResource("AtlasTexture_vvyr7")
 texture_pressed = SubResource("AtlasTexture_d38me")
 ignore_texture_size = true
