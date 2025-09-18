@@ -2,7 +2,6 @@ extends RigidBody3D
 
 @onready var cam: Camera3D = $Camera3D
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var texture_button: TextureButton = $"../../../TextureButton"
 
 @export var run_multiplier := 1.7
 
@@ -27,60 +26,37 @@ var left_vec = Vector2.ZERO
 var right_last = Vector2.ZERO
 var stick_radius = 100.0
 
-var run_held := false
-var run_touch_id := -1
-
 func _ready():
 	gravity_scale = 0.0
 	axis_lock_linear_y = true
 	axis_lock_angular_x = true
 	axis_lock_angular_z = true
 	angular_damp = 8.0
-	if texture_button:
-		texture_button.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		texture_button.toggle_mode = true
-		texture_button.keep_pressed_outside = true
 	if cam != null:
 		var to_cam = cam.global_transform.origin - (global_transform.origin + Vector3(0, cam_target_height, 0))
 		if to_cam.length() > 0.01:
 			yaw = atan2(to_cam.x, -to_cam.z)
 	_update_camera(0.0)
 
-func _button_hit(pos: Vector2) -> bool:
-	return texture_button != null and texture_button.get_global_rect().has_point(pos)
-
 func _input(event):
 	var half = get_viewport().get_visible_rect().size.x * 0.5
 	if event is InputEventScreenTouch:
 		if event.pressed:
-			if run_touch_id == -1 and _button_hit(event.position):
-				run_touch_id = event.index
-				_set_run(true)
-			elif event.position.x < half and left_id == -1:
+			if event.position.x < half and left_id == -1:
 				left_id = event.index
 				left_origin = event.position
 				left_vec = Vector2.ZERO
-			elif event.position.x >= half and right_id == -1 and not _button_hit(event.position):
+			elif event.position.x >= half and right_id == -1:
 				right_id = event.index
 				right_last = event.position
-			elif run_touch_id == -1:
-				run_touch_id = event.index
-				_set_run(true)
 		else:
-			if event.index == run_touch_id:
-				run_touch_id = -1
-				_set_run(false)
 			if event.index == left_id:
 				left_id = -1
 				left_vec = Vector2.ZERO
 			if event.index == right_id:
 				right_id = -1
 	if event is InputEventScreenDrag:
-		if event.index == run_touch_id:
-			if not _button_hit(event.position):
-				run_touch_id = -1
-				_set_run(false)
-		elif event.index == left_id:
+		if event.index == left_id:
 			var v = event.position - left_origin
 			if v.length() > stick_radius:
 				v = v.normalized() * stick_radius
@@ -105,7 +81,8 @@ func _physics_process(delta):
 		r = r.normalized()
 		var stick = Vector2(left_vec.x, -left_vec.y)
 		world_dir = (r * stick.x + f * stick.y).normalized()
-	var speed = move_speed * (run_multiplier if run_held else 1.0)
+	var run_now := Input.is_action_pressed("player_run")
+	var speed = move_speed * (run_multiplier if run_now else 1.0)
 	var target_vel = world_dir * speed
 	var horiz = Vector3(linear_velocity.x, 0.0, linear_velocity.z)
 	if world_dir != Vector3.ZERO:
@@ -143,8 +120,9 @@ func _update_anim():
 	if anim == null:
 		return
 	var spd = Vector3(linear_velocity.x, 0.0, linear_velocity.z).length()
+	var run_now := Input.is_action_pressed("player_run")
 	if spd > 0.1:
-		if run_held:
+		if run_now:
 			if anim.current_animation != "Run":
 				anim.play("Run")
 		else:
@@ -153,8 +131,3 @@ func _update_anim():
 	else:
 		if anim.current_animation != "Idle":
 			anim.play("Idle")
-
-func _set_run(v: bool):
-	run_held = v
-	if texture_button:
-		texture_button.set_pressed_no_signal(v)
