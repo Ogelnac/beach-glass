@@ -21,7 +21,6 @@ func _schedule_timer():
 	timer.start()
 
 func _on_timer_timeout():
-	print("time out")
 	_spawn_rabbit()
 	_schedule_timer()
 

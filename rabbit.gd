@@ -323,15 +323,15 @@ func _set_state(s):
 	if s != State.HEADING_HOME:
 		target_hole = null
 	state = s
-	match state:
-		State.SPAWNING: print("spawning")
-		State.IDLE_GRAZING: print("idle_grazing")
-		State.SEARCHING: print("searching")
-		State.GRAZING: print("grazing")
-		State.IDLE_ALERT: print("idle_alert")
-		State.FLEEING: print("fleeing")
-		State.HEADING_HOME: print("heading_home")
-		State.HOME: print("home")
+	#match state:
+		#State.SPAWNING: print("spawning")
+		#State.IDLE_GRAZING: print("idle_grazing")
+		#State.SEARCHING: print("searching")
+		#State.GRAZING: print("grazing")
+		#State.IDLE_ALERT: print("idle_alert")
+		#State.FLEEING: print("fleeing")
+		#State.HEADING_HOME: print("heading_home")
+		#State.HOME: print("home")
 
 func _enter_fleeing():
 	if state == State.GRAZING and target_plant and is_instance_valid(target_plant):

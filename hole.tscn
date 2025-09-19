@@ -1,8 +1,15 @@
-[gd_scene load_steps=4 format=4 uid="uid://cq8gw4xuy3keh"]
+[gd_scene load_steps=5 format=4 uid="uid://cq8gw4xuy3keh"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ymmax"]
-albedo_color = Color(0.270527, 0.167516, 0.0539035, 1)
-metallic_specular = 0.0
+[ext_resource type="Shader" uid="uid://bj7tudj5sw620" path="res://standard_material.gdshader" id="1_ln22a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1s0jb"]
+render_priority = 0
+shader = ExtResource("1_ln22a")
+shader_parameter/ratio_adjustment = Vector2(1, 1)
+shader_parameter/colour = Color(0.26, 0.17342, 0.1196, 1)
+shader_parameter/use_colour = true
+shader_parameter/mix_amount = 0.0
+shader_parameter/scale_offset = 0.2
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_r0eli"]
 _surfaces = [{
@@ -27,7 +34,7 @@ _surfaces = [{
 "index_count": 96,
 "index_data": PackedByteArray("EAABAAIAEAADAAEAEQAQAAIAEQACAAgAEgADABAAEgAEAAMAEwAQABEAEwASABAAFAARAAgAFAAIAAcACQAUAAcACQAHAAoACwAUAAkAFQARABQACwAVABQAFQATABEADAAVAAsADAAWABUAFgATABUADQAWAAwADQAOABYAFgAXABMADgAXABYAFwASABMADgAPABcAFwAYABIADwAYABcAGAAEABIADwAAABgAGAAFAAQAAAAFABgAAAAGAAUA"),
 "lods": [0.442408, PackedByteArray("AAABAAIAAAADAAEAAAAEAAMAAAAFAAQAAAAGAAUABwACAAgABwAAAAIACQAHAAoACwAHAAkACwAAAAcADAAAAAsADQAAAAwADQAOAAAADgAPAAAA")],
-"material": SubResource("StandardMaterial3D_ymmax"),
+"material": SubResource("ShaderMaterial_1s0jb"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 25,

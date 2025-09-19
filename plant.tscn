@@ -1,11 +1,48 @@
-[gd_scene load_steps=20 format=4 uid="uid://bt87yqbgrj83d"]
+[gd_scene load_steps=18 format=4 uid="uid://bt87yqbgrj83d"]
 
 [ext_resource type="Script" uid="uid://bpordo3xfbsqw" path="res://plant.gd" id="1_4oa58"]
-[ext_resource type="Material" uid="uid://tosf08adul16" path="res://stalk.tres" id="1_qljma"]
-[ext_resource type="Material" uid="uid://c8i41w86yarvb" path="res://petals.tres" id="2_4oa58"]
-[ext_resource type="Material" uid="uid://bhfuw86add2j3" path="res://seeds.tres" id="3_3syqp"]
+[ext_resource type="Material" uid="uid://cadbpjonv1hak" path="res://colour.tres" id="2_mbetm"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_si4gc"]
+[sub_resource type="Shader" id="Shader_qljma"]
+code = "shader_type spatial;
+render_mode unshaded, cull_disabled;
+
+uniform sampler2D albedo: source_color, filter_nearest;
+uniform vec2 ratio_adjustment = vec2(1.0, 1.0);
+uniform vec3 colour: source_color = vec3(1.0, 1.0, 1.0);
+uniform bool use_colour = false;
+uniform float mix_amount = 0.5;
+
+uniform float scale_offset = 0.2;
+
+void vertex() {
+	float rounded_x = round(VERTEX.x / scale_offset);
+	float rounded_y = round(VERTEX.y / scale_offset);
+	float rounded_z = round(VERTEX.z / scale_offset);
+
+	vec3 rounded = vec3(rounded_x * scale_offset, rounded_y * scale_offset, rounded_z * scale_offset);
+
+	VERTEX = rounded;
+}
+
+void fragment() {
+	vec2 uv_adjusted = UV * ratio_adjustment;
+
+	vec3 blend = mix(colour, texture(albedo, uv_adjusted).rgb, mix_amount);
+	if (use_colour)
+		ALBEDO = blend;
+	else
+		ALBEDO = texture(albedo, uv_adjusted).rgb;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4oa58"]
+render_priority = 0
+shader = SubResource("Shader_qljma")
+shader_parameter/ratio_adjustment = Vector2(1, 1)
+shader_parameter/colour = Color(0.269293, 0.38, 0.2052, 1)
+shader_parameter/use_colour = true
+shader_parameter/mix_amount = 0.0
+shader_parameter/scale_offset = 0.025
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_p8x5b"]
 _surfaces = [{
@@ -28,7 +65,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 48,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAAAAIABAACAAUABgAEAAUABgAFAAcACAAGAAcACAAHAAkACgALAAwACgANAAsADgAKAAwADgAMAA8AEAAOAA8AEAAPABEAEgAQABEAEgARABMA"),
-"material": SubResource("StandardMaterial3D_si4gc"),
+"material": SubResource("ShaderMaterial_4oa58"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 20,
@@ -37,7 +74,14 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_p8x5b")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1g1na"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3syqp"]
+render_priority = 0
+shader = SubResource("Shader_qljma")
+shader_parameter/ratio_adjustment = Vector2(1, 1)
+shader_parameter/colour = Color(0.336, 0.48, 0.3072, 1)
+shader_parameter/use_colour = true
+shader_parameter/mix_amount = 0.0
+shader_parameter/scale_offset = 0.025
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_57ijd"]
 _surfaces = [{
@@ -60,7 +104,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 24,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAAAAIABAACAAUABgAAAAQABgAHAAAABwADAAAABwAIAAMA"),
-"material": SubResource("StandardMaterial3D_1g1na"),
+"material": SubResource("ShaderMaterial_3syqp"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 9,
@@ -69,7 +113,14 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_57ijd")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pa7d5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k54vv"]
+render_priority = 0
+shader = SubResource("Shader_qljma")
+shader_parameter/ratio_adjustment = Vector2(1, 1)
+shader_parameter/colour = Color(1, 0.831127, 0.889538, 1)
+shader_parameter/use_colour = true
+shader_parameter/mix_amount = 0.0
+shader_parameter/scale_offset = 0.025
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_3pgp6"]
 _surfaces = [{
@@ -94,7 +145,7 @@ _surfaces = [{
 "index_count": 72,
 "index_data": PackedByteArray("AAAOAA8AAwAAAA8AAwAPAAIAAAABAA4AAQAQAA4AAQAFABAABQAEABAABQAGAAQABgARAAQABgAJABEACQAHABEACQAKAAcACgASAAcACgAMABIADAALABIADAANAAsAEQAHABMABAARABQAEQATABQAFAATAAgABAAUABUAFAAIABYAFQAUABYAFQAWABcA"),
 "lods": [0.402567, PackedByteArray("AAABAAIAAwAAAAIAAQAEAAIAAQAFAAQABQAGAAQABgAHAAQABAAHAAgABgAJAAcACQAKAAcACgALAAcACgAMAAsADAANAAsA")],
-"material": SubResource("StandardMaterial3D_pa7d5"),
+"material": SubResource("ShaderMaterial_k54vv"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 24,
@@ -102,8 +153,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_3pgp6")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wl6bg"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_o1u80"]
 _surfaces = [{
@@ -128,7 +177,7 @@ _surfaces = [{
 "index_count": 72,
 "index_data": PackedByteArray("AAAOAA8AAwAAAA8AAwAPAAIAAAABAA4AAQAQAA4AAQAFABAABQAEABAABQAGAAQABgARAAQABgAHABEABwAJABEABwAKAAkACgASAAkACgALABIACwAMABIACwANAAwAEQAJABMABAARABQAEQATABQAFAATAAgABAAUABUAFAAIABYAFQAUABYAFQAWABcA"),
 "lods": [0.66174, PackedByteArray("AAABAAIAAwAAAAIAAQAEAAIAAQAFAAQABQAGAAQABgAHAAQABAAHAAgABwAJAAgABwAKAAkACgALAAkACwAMAAkACwANAAwA")],
-"material": SubResource("StandardMaterial3D_wl6bg"),
+"material": ExtResource("2_mbetm"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 24,
@@ -137,7 +186,14 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_o1u80")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_304u3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5o73s"]
+render_priority = 0
+shader = SubResource("Shader_qljma")
+shader_parameter/ratio_adjustment = Vector2(1, 1)
+shader_parameter/colour = Color(0.936596, 0.727161, 0.344572, 1)
+shader_parameter/use_colour = true
+shader_parameter/mix_amount = 0.0
+shader_parameter/scale_offset = 0.025
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_unn7t"]
 _surfaces = [{
@@ -160,7 +216,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 24,
 "index_data": PackedByteArray("AAABAAIAAAADAAEABAAAAAIABAACAAUABgAAAAQABgAHAAAABwADAAAABwAIAAMA"),
-"material": SubResource("StandardMaterial3D_304u3"),
+"material": SubResource("ShaderMaterial_5o73s"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 9,
@@ -174,13 +230,11 @@ script = ExtResource("1_4oa58")
 
 [node name="Stalk" type="MeshInstance3D" parent="."]
 transform = Transform3D(0, 1, 0, 0, 0, -1, 0.0340711, 0, 0, 0, 0.944862, 0)
-material_override = ExtResource("1_qljma")
 mesh = SubResource("ArrayMesh_tqbqd")
 skeleton = NodePath("")
 
 [node name="Leaf" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.563238, -0.516396, 0.10922, 0.526028, 0.562329, -0.0539631, -0.043466, 0.113806, 0.762227, 0, 0, 0)
-material_override = ExtResource("1_qljma")
 mesh = SubResource("ArrayMesh_n5iux")
 skeleton = NodePath("")
 
@@ -188,16 +242,13 @@ skeleton = NodePath("")
 transform = Transform3D(0.387561, 0.319671, 0.0296235, -0.316307, 0.372272, 0.120972, 0.0549284, -0.11178, 0.487606, 0.284273, 2.03764, 0.658154)
 mesh = SubResource("ArrayMesh_dllny")
 skeleton = NodePath("")
-surface_material_override/0 = ExtResource("2_4oa58")
 
 [node name="Cube" type="MeshInstance3D" parent="Petals"]
 transform = Transform3D(0.528021, -0.429075, -0.027953, 0.429843, 0.527869, 0.0168408, 0.0110574, -0.0307037, 0.680168, 0.0299559, -0.00550297, 0.13036)
-material_override = ExtResource("2_4oa58")
 mesh = SubResource("ArrayMesh_fgdtn")
 skeleton = NodePath("")
 
 [node name="Plane_002" type="MeshInstance3D" parent="Petals"]
 transform = Transform3D(0.189122, 0.0266747, -0.154373, 0.155993, -0.00973485, 0.189423, 0.0144556, -0.243933, -0.0244406, 0.00671931, 0.010247, -0.140945)
-material_override = ExtResource("3_3syqp")
 mesh = SubResource("ArrayMesh_lw0qw")
 skeleton = NodePath("")

@@ -1,5 +1,6 @@
-[gd_scene load_steps=29 format=4 uid="uid://b2vdddkn473kt"]
+[gd_scene load_steps=32 format=4 uid="uid://b2vdddkn473kt"]
 
+[ext_resource type="Shader" uid="uid://di5scvrgktwk6" path="res://sky.gdshader" id="1_m3vnf"]
 [ext_resource type="Script" uid="uid://6boaq4rlekrr" path="res://dog.gd" id="1_u1030"]
 [ext_resource type="PackedScene" uid="uid://cq8gw4xuy3keh" path="res://hole.tscn" id="2_phhon"]
 [ext_resource type="PackedScene" uid="uid://bt87yqbgrj83d" path="res://plant.tscn" id="3_m3vnf"]
@@ -10,16 +11,34 @@
 [ext_resource type="Texture2D" uid="uid://c8bslovresixv" path="res://dog.png" id="7_xyq5p"]
 [ext_resource type="Script" uid="uid://bjgkls8h8831e" path="res://run_button.gd" id="9_phhon"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_hgnw7"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_phhon"]
+shader = ExtResource("1_m3vnf")
+shader_parameter/sky_color = Color(0.03, 0.05, 0.11, 1)
+shader_parameter/horizon_tint_color = Color(0.0167033, 0.0299174, 0.058871, 1)
+shader_parameter/horizon_tint_strength = 0.791
+shader_parameter/horizon_offset = 0.014
+shader_parameter/horizon_softness = 0.047
+shader_parameter/sky_time = 1.0
+shader_parameter/star_base_color = Color(0.8, 1, 0.3, 1)
+shader_parameter/star_hue_offset = 0.6
+shader_parameter/star_intensity = 0.08
+shader_parameter/layer_scale = 5.0
+shader_parameter/layer_scale_step = 15.0
+shader_parameter/layers_count = 2
+shader_parameter/gradient_top_color = Color(0.45, 0.65, 0.95, 1)
+shader_parameter/gradient_bottom_color = Color(0.95, 0.75, 0.45, 1)
+shader_parameter/day_gradient_power = 0.284
+shader_parameter/day_horizon_tint_color = Color(0.78155, 0.832304, 0.820098, 1)
+shader_parameter/day_horizon_tint_strength = 0.8
+shader_parameter/day_horizon_offset = 0.0
+shader_parameter/day_horizon_softness = 0.024
 
-[sub_resource type="Sky" id="Sky_0xm2m"]
-sky_material = SubResource("ProceduralSkyMaterial_hgnw7")
+[sub_resource type="Sky" id="Sky_m3vnf"]
+sky_material = SubResource("ShaderMaterial_phhon")
 
 [sub_resource type="Environment" id="Environment_ctkce"]
 background_mode = 2
-background_energy_multiplier = 2.0
-sky = SubResource("Sky_0xm2m")
-fog_enabled = true
+sky = SubResource("Sky_m3vnf")
 fog_mode = 1
 fog_light_color = Color(0.475629, 0.559449, 0.655338, 1)
 fog_density = 1.0
@@ -29,19 +48,29 @@ fog_sky_affect = 0.8
 vertices = PackedVector3Array(-49.5, 1, -49.5, -49.5, 1, 49.5, 49.5, 1, 49.5, 49.5, 1, -49.5)
 polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hgnw7"]
+[sub_resource type="Gradient" id="Gradient_phhon"]
+colors = PackedColorArray(0.89, 0.75294, 0.5162, 1, 0.76, 0.637387, 0.4256, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h2yge"]
-albedo_color = Color(0.81, 0.69336, 0.5184, 1)
-metallic = 0.19
-roughness = 0.74
-normal_texture = SubResource("NoiseTexture2D_hgnw7")
-heightmap_deep_parallax = true
-heightmap_min_layers = 8
-heightmap_max_layers = 32
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_m3vnf"]
+frequency = 0.05
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hfvte"]
+seamless = true
+color_ramp = SubResource("Gradient_phhon")
+noise = SubResource("FastNoiseLite_m3vnf")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_88d0e"]
+render_priority = 0
+shader = ExtResource("7_phhon")
+shader_parameter/albedo = SubResource("NoiseTexture2D_hfvte")
+shader_parameter/ratio_adjustment = Vector2(4, 3)
+shader_parameter/colour = Color(1, 1, 1, 1)
+shader_parameter/use_colour = false
+shader_parameter/mix_amount = 0.5
+shader_parameter/scale_offset = 0.2
 
 [sub_resource type="BoxMesh" id="BoxMesh_ctkce"]
-material = SubResource("StandardMaterial3D_h2yge")
+material = SubResource("ShaderMaterial_88d0e")
 size = Vector3(100, 1, 100)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u1030"]
@@ -51,8 +80,10 @@ size = Vector3(100, 1, 100)
 render_priority = 0
 shader = ExtResource("7_phhon")
 shader_parameter/albedo = ExtResource("7_xyq5p")
+shader_parameter/ratio_adjustment = Vector2(1, 1)
 shader_parameter/colour = Color(1, 1, 1, 1)
 shader_parameter/use_colour = false
+shader_parameter/mix_amount = 0.5
 shader_parameter/scale_offset = 10.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_vvyr7"]
@@ -1445,11 +1476,11 @@ _data = {
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vvyr7"]
 atlas = ExtResource("4_vvyr7")
-region = Rect2(0, 0, 128, 128)
+region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_d38me"]
 atlas = ExtResource("4_vvyr7")
-region = Rect2(128, 0, 128, 128)
+region = Rect2(64, 0, 64, 64)
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -1492,13 +1523,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.7879, 0.1, -20.986)
 [node name="PlantManager" type="Node" parent="SubViewportContainer/SubViewport"]
 
 [node name="Plant" parent="SubViewportContainer/SubViewport/PlantManager" instance=ExtResource("3_m3vnf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -8.359)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.57419, -8.359)
 
 [node name="Plant2" parent="SubViewportContainer/SubViewport/PlantManager" instance=ExtResource("3_m3vnf")]
-transform = Transform3D(0.847761, 0, -0.530378, 0, 1, 0, 0.530378, 0, 0.847761, -5.253, 0, -3.049)
+transform = Transform3D(0.847761, 0, -0.530378, 0, 1, 0, 0.530378, 0, 0.847761, -5.253, 0.57419, -3.049)
 
 [node name="Plant3" parent="SubViewportContainer/SubViewport/PlantManager" instance=ExtResource("3_m3vnf")]
-transform = Transform3D(-0.860582, 0, -0.509312, 0, 1, 0, 0.509312, 0, -0.860582, -5.253, 0, -11.238)
+transform = Transform3D(-0.860582, 0, -0.509312, 0, 1, 0, 0.509312, 0, -0.860582, -5.253, 0.57419, -11.238)
 
 [node name="RabbitManager" type="Node" parent="SubViewportContainer/SubViewport"]
 script = ExtResource("4_hfvte")
@@ -1779,8 +1810,9 @@ libraries = {
 }
 
 [node name="RunButton" type="TouchScreenButton" parent="."]
+texture_filter = 1
 position = Vector2(2304, 1296)
-scale = Vector2(2.75, 2.75)
+scale = Vector2(6, 6)
 texture_normal = SubResource("AtlasTexture_vvyr7")
 texture_pressed = SubResource("AtlasTexture_d38me")
 action = "player_run"

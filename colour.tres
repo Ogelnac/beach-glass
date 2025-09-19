@@ -1,4 +1,7 @@
-shader_type spatial;
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cadbpjonv1hak"]
+
+[sub_resource type="Shader" id="Shader_qljma"]
+code = "shader_type spatial;
 render_mode unshaded, cull_disabled;
 
 uniform sampler2D albedo: source_color, filter_nearest;
@@ -27,4 +30,13 @@ void fragment() {
 		ALBEDO = blend;
 	else
 		ALBEDO = texture(albedo, uv_adjusted).rgb;
-}
+}"
+
+[resource]
+render_priority = 0
+shader = SubResource("Shader_qljma")
+shader_parameter/ratio_adjustment = Vector2(1, 1)
+shader_parameter/colour = Color(1, 0.64, 0.778, 1)
+shader_parameter/use_colour = true
+shader_parameter/mix_amount = 0.0
+shader_parameter/scale_offset = 0.025
