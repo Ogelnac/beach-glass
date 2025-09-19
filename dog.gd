@@ -27,11 +27,12 @@ var right_last = Vector2.ZERO
 var stick_radius = 100.0
 
 func _ready():
-	gravity_scale = 0.0
-	axis_lock_linear_y = true
+	gravity_scale = 1.0
+	axis_lock_linear_y = false
 	axis_lock_angular_x = true
 	axis_lock_angular_z = true
 	angular_damp = 8.0
+	continuous_cd = true
 	if cam != null:
 		var to_cam = cam.global_transform.origin - (global_transform.origin + Vector3(0, cam_target_height, 0))
 		if to_cam.length() > 0.01:
@@ -84,7 +85,8 @@ func _physics_process(delta):
 	var run_now := Input.is_action_pressed("player_run")
 	var speed = move_speed * (run_multiplier if run_now else 1.0)
 	var target_vel = world_dir * speed
-	var horiz = Vector3(linear_velocity.x, 0.0, linear_velocity.z)
+	var vel := linear_velocity
+	var horiz = Vector3(vel.x, 0.0, vel.z)
 	if world_dir != Vector3.ZERO:
 		horiz = horiz.lerp(target_vel, accel * delta)
 		var desired = atan2(world_dir.x, world_dir.z)
@@ -94,7 +96,7 @@ func _physics_process(delta):
 	else:
 		horiz = horiz.lerp(Vector3.ZERO, decel * delta)
 		angular_velocity.y = 0.0
-	linear_velocity = Vector3(horiz.x, 0.0, horiz.z)
+	linear_velocity = Vector3(horiz.x, vel.y, horiz.z)
 	_update_camera(delta)
 	_update_anim()
 

@@ -1,7 +1,6 @@
-[gd_scene load_steps=18 format=4 uid="uid://bt87yqbgrj83d"]
+[gd_scene load_steps=19 format=4 uid="uid://bt87yqbgrj83d"]
 
 [ext_resource type="Script" uid="uid://bpordo3xfbsqw" path="res://plant.gd" id="1_4oa58"]
-[ext_resource type="Material" uid="uid://cadbpjonv1hak" path="res://colour.tres" id="2_mbetm"]
 
 [sub_resource type="Shader" id="Shader_qljma"]
 code = "shader_type spatial;
@@ -154,6 +153,47 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_3pgp6")
 
+[sub_resource type="Shader" id="Shader_t03al"]
+code = "shader_type spatial;
+render_mode unshaded, cull_disabled;
+
+uniform sampler2D albedo: source_color, filter_nearest;
+uniform vec2 ratio_adjustment = vec2(1.0, 1.0);
+uniform vec3 colour: source_color = vec3(1.0, 1.0, 1.0);
+uniform bool use_colour = false;
+uniform float mix_amount = 0.5;
+
+uniform float scale_offset = 0.2;
+
+void vertex() {
+	float rounded_x = round(VERTEX.x / scale_offset);
+	float rounded_y = round(VERTEX.y / scale_offset);
+	float rounded_z = round(VERTEX.z / scale_offset);
+
+	vec3 rounded = vec3(rounded_x * scale_offset, rounded_y * scale_offset, rounded_z * scale_offset);
+
+	VERTEX = rounded;
+}
+
+void fragment() {
+	vec2 uv_adjusted = UV * ratio_adjustment;
+
+	vec3 blend = mix(colour, texture(albedo, uv_adjusted).rgb, mix_amount);
+	if (use_colour)
+		ALBEDO = blend;
+	else
+		ALBEDO = texture(albedo, uv_adjusted).rgb;
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mbetm"]
+render_priority = 0
+shader = SubResource("Shader_t03al")
+shader_parameter/ratio_adjustment = Vector2(2, 2)
+shader_parameter/colour = Color(1, 1, 1, 1)
+shader_parameter/use_colour = false
+shader_parameter/mix_amount = 0.5
+shader_parameter/scale_offset = 0.2
+
 [sub_resource type="ArrayMesh" id="ArrayMesh_o1u80"]
 _surfaces = [{
 "aabb": AABB(-1.41642, -1.41642, -0.905025, 2.83284, 2.83284, 1.41642),
@@ -168,7 +208,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_fgdtn"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_qljma"]
 resource_name = "plant_Cube_001"
 _surfaces = [{
 "aabb": AABB(-1.41642, -1.41642, -0.905025, 2.83284, 2.83284, 1.41642),
@@ -177,7 +217,7 @@ _surfaces = [{
 "index_count": 72,
 "index_data": PackedByteArray("AAAOAA8AAwAAAA8AAwAPAAIAAAABAA4AAQAQAA4AAQAFABAABQAEABAABQAGAAQABgARAAQABgAHABEABwAJABEABwAKAAkACgASAAkACgALABIACwAMABIACwANAAwAEQAJABMABAARABQAEQATABQAFAATAAgABAAUABUAFAAIABYAFQAUABYAFQAWABcA"),
 "lods": [0.66174, PackedByteArray("AAABAAIAAwAAAAIAAQAEAAIAAQAFAAQABQAGAAQABgAHAAQABAAHAAgABwAJAAgABwAKAAkACgALAAkACwAMAAkACwANAAwA")],
-"material": ExtResource("2_mbetm"),
+"material": SubResource("ShaderMaterial_mbetm"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 24,
@@ -245,7 +285,7 @@ skeleton = NodePath("")
 
 [node name="Cube" type="MeshInstance3D" parent="Petals"]
 transform = Transform3D(0.528021, -0.429075, -0.027953, 0.429843, 0.527869, 0.0168408, 0.0110574, -0.0307037, 0.680168, 0.0299559, -0.00550297, 0.13036)
-mesh = SubResource("ArrayMesh_fgdtn")
+mesh = SubResource("ArrayMesh_qljma")
 skeleton = NodePath("")
 
 [node name="Plane_002" type="MeshInstance3D" parent="Petals"]

@@ -6,10 +6,10 @@
 render_priority = 0
 shader = ExtResource("1_ln22a")
 shader_parameter/ratio_adjustment = Vector2(1, 1)
-shader_parameter/colour = Color(0.26, 0.17342, 0.1196, 1)
+shader_parameter/colour = Color(0.67, 0.49647, 0.3886, 1)
 shader_parameter/use_colour = true
 shader_parameter/mix_amount = 0.0
-shader_parameter/scale_offset = 0.2
+shader_parameter/scale_multiplier = 10.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_r0eli"]
 _surfaces = [{

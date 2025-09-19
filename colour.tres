@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://cadbpjonv1hak"]
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://cadbpjonv1hak"]
 
 [sub_resource type="Shader" id="Shader_qljma"]
 code = "shader_type spatial;
@@ -32,11 +32,23 @@ void fragment() {
 		ALBEDO = texture(albedo, uv_adjusted).rgb;
 }"
 
+[sub_resource type="Gradient" id="Gradient_1dprg"]
+colors = PackedColorArray(0.726558, 0.632557, 0.495156, 1, 0.804531, 0.696121, 0.538445, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_iv4po"]
+frequency = 0.1
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_gw4nh"]
+seamless = true
+color_ramp = SubResource("Gradient_1dprg")
+noise = SubResource("FastNoiseLite_iv4po")
+
 [resource]
 render_priority = 0
 shader = SubResource("Shader_qljma")
-shader_parameter/ratio_adjustment = Vector2(1, 1)
-shader_parameter/colour = Color(1, 0.64, 0.778, 1)
-shader_parameter/use_colour = true
-shader_parameter/mix_amount = 0.0
-shader_parameter/scale_offset = 0.025
+shader_parameter/albedo = SubResource("NoiseTexture2D_gw4nh")
+shader_parameter/ratio_adjustment = Vector2(2, 2)
+shader_parameter/colour = Color(1, 1, 1, 1)
+shader_parameter/use_colour = false
+shader_parameter/mix_amount = 0.5
+shader_parameter/scale_offset = 0.2

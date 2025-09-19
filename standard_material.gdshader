@@ -7,16 +7,14 @@ uniform vec3 colour: source_color = vec3(1.0, 1.0, 1.0);
 uniform bool use_colour = false;
 uniform float mix_amount = 0.5;
 
-uniform float scale_offset = 0.2;
+uniform float scale_multiplier = 0.2;
 
 void vertex() {
-	float rounded_x = round(VERTEX.x / scale_offset);
-	float rounded_y = round(VERTEX.y / scale_offset);
-	float rounded_z = round(VERTEX.z / scale_offset);
+	float rounded_x = round(VERTEX.x * scale_multiplier);
+	float rounded_y = round(VERTEX.y * scale_multiplier);
+	float rounded_z = round(VERTEX.z * scale_multiplier);
 
-	vec3 rounded = vec3(rounded_x * scale_offset, rounded_y * scale_offset, rounded_z * scale_offset);
-
-	VERTEX = rounded;
+	VERTEX = vec3(rounded_x / scale_multiplier, rounded_y / scale_multiplier, rounded_z / scale_multiplier);
 }
 
 void fragment() {

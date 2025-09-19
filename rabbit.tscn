@@ -8,9 +8,11 @@
 render_priority = 0
 shader = ExtResource("2_bmu3n")
 shader_parameter/albedo = ExtResource("3_bsnlv")
+shader_parameter/ratio_adjustment = Vector2(1, 1)
 shader_parameter/colour = Color(1, 1, 1, 1)
 shader_parameter/use_colour = true
-shader_parameter/scale_offset = 0.2
+shader_parameter/mix_amount = 0.5
+shader_parameter/scale_multiplier = 4.0
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_qwl8u"]
 resource_name = "bunny_Cube_002"
