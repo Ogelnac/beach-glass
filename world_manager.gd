@@ -1,6 +1,6 @@
 extends Node
 
-const WORLD_ENV_PATH := "/root/Main/SubViewportContainer/SubViewport/WorldEnvironment"
+const WORLD_ENV_PATH := "/root/Control/SubViewportContainer/SubViewport/WorldEnvironment"
 
 var world_environment: WorldEnvironment
 
@@ -13,6 +13,7 @@ func _ready() -> void:
 			await get_tree().process_frame
 	
 	# Start updating once it's ready
+	print("update")
 	_update_sky_time()
 	var timer := Timer.new()
 	timer.wait_time = 30.0
@@ -32,8 +33,7 @@ func _update_sky_time() -> void:
 
 	var minutes := _minutes_since_midnight()
 	var v := _compute_sky_time(minutes)
-	if mat.has_parameter("sky_time"):
-		mat.set_shader_parameter("sky_time", v)
+	mat.set_shader_parameter("sky_time", v)
 
 func _minutes_since_midnight() -> int:
 	var t := Time.get_time_dict_from_system()
